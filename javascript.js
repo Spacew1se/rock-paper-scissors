@@ -14,7 +14,6 @@ function capitalizeFirstLetter(string) {
 
 function playRound(playerSelection, computerSelection) {
 
-    playerSelection = playerSelection.toLowerCase();
     const tieMessage = `It's a tie! We both chose ${playerSelection}.`;
     const winMessage = `You win! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}.`;
     const loseMessage =  `You lose! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`
@@ -25,3 +24,21 @@ function playRound(playerSelection, computerSelection) {
 
     return roundResult;
 }
+
+function getPlayerSelection() {
+
+    let playerSelection = window.prompt("Choose rock, paper, or scissors");
+    playerSelection = playerSelection.toLowerCase();
+
+    while (playerSelection != 'rock' && playerSelection != 'paper' && playerSelection != 'scissors') {
+        playerSelection = window.prompt("Invalid selection. You may only enter rock, paper, or scissors.\nChoose rock, paper, or scissors");
+        playerSelection = playerSelection.toLowerCase();
+    }
+
+    return playerSelection;
+}
+
+let result = playRound(getPlayerSelection(), computerPlay());
+
+console.log(result);
+

@@ -1,4 +1,4 @@
-function computerPlay() {
+function getComputerSelection() {
     
     let rand = Math.floor(Math.random() * 3);
 
@@ -38,7 +38,30 @@ function getPlayerSelection() {
     return playerSelection;
 }
 
-let result = playRound(getPlayerSelection(), computerPlay());
+function game() {
+    let playerRoundsWon = 0;
+    let cpuRoundsWon = 0;
+    let roundResult = "";
+    let subRes = "";
+    let gameResult = "";
 
-console.log(result);
+    alert("Let's play rock, paper, scissors! Best out of 5 rounds wins.");
 
+    for (let i=0; i<5; i++) {
+        roundResult = playRound(getPlayerSelection(), getComputerSelection());
+        console.log(roundResult);
+
+        subRes = roundResult.slice(4,7);
+        if (subRes === 'win') 
+            playerRoundsWon++;
+        else if (subRes === 'los')
+            cpuRoundsWon++;
+    }
+
+    gameResult = (playerRoundsWon > cpuRoundsWon) ? "Congratulations, you won the game!" 
+        : (playerRoundsWon < cpuRoundsWon) ? "You lost the game. Better luck next time!" : "We tied! What are the odds of that?";
+
+    console.log(gameResult);
+}
+
+game();

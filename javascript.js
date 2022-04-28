@@ -1,5 +1,5 @@
 function getComputerSelection() {
-     
+
     let rand = Math.floor(Math.random() * 3);
     let computerSelection = (rand === 0) ? 'rock' : 
         (rand === 1) ? 'paper' : 'scissors';   
@@ -10,7 +10,11 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function playRound(playerSelection, computerSelection) {
+function playRound(playerChoice) {
+
+    computerSelection = getComputerSelection();
+    playerSelection = playerChoice.target.id;
+
 
     const tieMessage = `It's a tie! We both chose ${playerSelection}.`;
     const winMessage = `You win! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}.`;
@@ -23,18 +27,6 @@ function playRound(playerSelection, computerSelection) {
     return roundResult;
 }
 
-function getPlayerSelection() {
-
-    let playerSelection = window.prompt("Choose rock, paper, or scissors");
-    playerSelection = playerSelection.toLowerCase();
-
-    while (playerSelection != 'rock' && playerSelection != 'paper' && playerSelection != 'scissors') {
-        playerSelection = window.prompt("Invalid selection. You may only enter rock, paper, or scissors.\nChoose rock, paper, or scissors");
-        playerSelection = playerSelection.toLowerCase();
-    }
-
-    return playerSelection;
-}
 
 function game() {
     let playerRoundsWon = 0;
@@ -62,5 +54,5 @@ function game() {
     console.log(gameResult);
 }
 
-const buttons = document.querySelector('.btns');
+const buttons = document.querySelectorAll('.btns');
 buttons.forEach(btn => btn.addEventListener('click', playRound))

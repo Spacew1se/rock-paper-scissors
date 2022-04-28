@@ -21,9 +21,11 @@ function playRound(playerChoice) {
             : ((computerSelection === 'paper') ? winMessage : (computerSelection === 'rock') ? loseMessage : tieMessage);
 
     const results = document.createElement('div');
+    results.classList.add('roundRes')
     results.textContent = roundResult;
     container.appendChild(results);
 
+    
 }
 
 

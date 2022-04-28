@@ -1,7 +1,6 @@
 function getComputerSelection() {
-
-    let rand = Math.floor(Math.random() * 3);
-    let computerSelection = (rand === 0) ? 'rock' : 
+    const rand = Math.floor(Math.random() * 3);
+    const computerSelection = (rand === 0) ? 'rock' : 
         (rand === 1) ? 'paper' : 'scissors';   
     return computerSelection;
 }
@@ -11,20 +10,20 @@ function capitalizeFirstLetter(string) {
 }
 
 function playRound(playerChoice) {
-
     computerSelection = getComputerSelection();
     playerSelection = playerChoice.target.id;
 
-
     const tieMessage = `It's a tie! We both chose ${playerSelection}.`;
     const winMessage = `You win! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}.`;
-    const loseMessage =  `You lose! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`
-
+    const loseMessage =  `You lose! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`;
     const roundResult = (playerSelection === 'rock') ? ((computerSelection === 'scissors') ? winMessage : (computerSelection === 'paper') ? loseMessage : tieMessage) 
             : (playerSelection === 'paper') ? ((computerSelection === 'rock') ? winMessage : (computerSelection === 'scissors') ? loseMessage : tieMessage) 
             : ((computerSelection === 'paper') ? winMessage : (computerSelection === 'rock') ? loseMessage : tieMessage);
 
-    return roundResult;
+    const results = document.createElement('div');
+    results.textContent = roundResult;
+    container.appendChild(results);
+
 }
 
 
@@ -56,3 +55,5 @@ function game() {
 
 const buttons = document.querySelectorAll('.btns');
 buttons.forEach(btn => btn.addEventListener('click', playRound))
+
+const container = document.querySelector('.container')

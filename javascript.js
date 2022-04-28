@@ -1,11 +1,9 @@
 function getComputerSelection() {
-    
+     
     let rand = Math.floor(Math.random() * 3);
-
     let computerSelection = (rand === 0) ? 'rock' : 
-        (rand === 1) ? 'paper' : 'scissors';
-    
-        return computerSelection;
+        (rand === 1) ? 'paper' : 'scissors';   
+    return computerSelection;
 }
 
 function capitalizeFirstLetter(string) {
@@ -46,8 +44,8 @@ function game() {
     let gameResult = "";
 
     alert("Let's play rock, paper, scissors! Best out of 5 rounds wins.");
-
-    for (let i=0; i<5; i++) {
+    
+//    for (let i=0; i<5; i++) {
         roundResult = playRound(getPlayerSelection(), getComputerSelection());
         console.log(roundResult);
 
@@ -56,7 +54,7 @@ function game() {
             playerRoundsWon++;
         else if (subRes === 'los')
             cpuRoundsWon++;
-    }
+ //   }
 
     gameResult = (playerRoundsWon > cpuRoundsWon) ? "Congratulations, you won the game!" 
         : (playerRoundsWon < cpuRoundsWon) ? "You lost the game. Better luck next time!" : "We tied! What are the odds of that?";
@@ -64,4 +62,5 @@ function game() {
     console.log(gameResult);
 }
 
-game();
+const buttons = document.querySelector('.btns');
+buttons.forEach(btn => btn.addEventListener('click', playRound))

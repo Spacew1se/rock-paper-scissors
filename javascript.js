@@ -20,37 +20,38 @@ function playRound(playerChoice) {
             : (playerSelection === 'paper') ? ((computerSelection === 'rock') ? winMessage : (computerSelection === 'scissors') ? loseMessage : tieMessage) 
             : ((computerSelection === 'paper') ? winMessage : (computerSelection === 'rock') ? loseMessage : tieMessage);
 
-    const results = document.querySelector('.results');
+    const results = document.querySelector('.rndResult');
     results.textContent = roundResult;
     results.style.backgroundColor = 'purple';
+
+    subRes = roundResult.slice(4,7);
+    if (subRes === 'win') playerRoundsWon++;
+    else if (subRes === 'los') cpuRoundsWon++;
+        
+    const playerScore = document.querySelector('.plyrRounds');
+    const cpuScore = document.querySelector('.cpuRounds');
+
+    playerScore.textContent = `Player: ${playerRoundsWon}`;
+    cpuScore.textContent = `Opponent: ${cpuRoundsWon}`;
+    
 }
 
 
 function game() {
-    let playerRoundsWon = 0;
-    let cpuRoundsWon = 0;
-    let roundResult = "";
-    let subRes = "";
+    
     let gameResult = "";
 
     alert("Let's play rock, paper, scissors! Best out of 5 rounds wins.");
-    
-//    for (let i=0; i<5; i++) {
-        roundResult = playRound(getPlayerSelection(), getComputerSelection());
-        console.log(roundResult);
-
-        subRes = roundResult.slice(4,7);
-        if (subRes === 'win') 
-            playerRoundsWon++;
-        else if (subRes === 'los')
-            cpuRoundsWon++;
- //   }
 
     gameResult = (playerRoundsWon > cpuRoundsWon) ? "Congratulations, you won the game!" 
         : (playerRoundsWon < cpuRoundsWon) ? "You lost the game. Better luck next time!" : "We tied! What are the odds of that?";
 
     console.log(gameResult);
 }
+
+
+let playerRoundsWon = 0;
+let cpuRoundsWon = 0;
 
 const buttons = document.querySelectorAll('.btns');
 buttons.forEach(btn => btn.addEventListener('click', playRound))

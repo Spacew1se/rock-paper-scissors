@@ -20,12 +20,9 @@ function playRound(playerChoice) {
             : (playerSelection === 'paper') ? ((computerSelection === 'rock') ? winMessage : (computerSelection === 'scissors') ? loseMessage : tieMessage) 
             : ((computerSelection === 'paper') ? winMessage : (computerSelection === 'rock') ? loseMessage : tieMessage);
 
-    const results = document.createElement('div');
-    results.classList.add('roundRes')
+    const results = document.querySelector('.results');
     results.textContent = roundResult;
-    container.appendChild(results);
-
-    
+    results.style.backgroundColor = 'purple';
 }
 
 

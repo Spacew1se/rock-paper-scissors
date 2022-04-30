@@ -1,12 +1,54 @@
+const WINCOND = 5;
+const CHOICE = ["Rock", "Paper", "Scissors"]
+let playerRoundsWon = 0;
+let cpuRoundsWon = 0;
+let roundsPlayed = 0;
+
+const container = document.querySelector('.container');
+const start = document.querySelector('.start');
+start.addEventListener('click', startGame);
+
+function startGame() {
+    start.parentNode.removeChild(start);
+    createButtons();
+    createScore();
+    displayScore();
+}
+
+function createButtons() {
+    const buttons = document.createElement('div');
+    buttons.classList.add('btns');
+    container.appendChild(buttons);
+    for (let i=0; i<3; i++) {
+        let button = document.createElement('button');
+        button.type = "button";
+        button.id = lowercaseFirstLetter(CHOICE[i]);
+        button.textContent = CHOICE[i];
+        buttons.appendChild(button);
+        button.addEventListener('click', playRound);
+    }
+}
+
+function createScore() {
+    const results = document.createElement('div');
+    results.classList.add('results');
+    container.appendChild(results);
+    const scoreList = document.createElement('ul');
+    scoreList.classList.add('score');
+    results.appendChild(scoreList);
+    const playerScore = document.createElement('li');
+    playerScore.classList.add('plyrRounds');
+    const cpuScore = document.createElement('li');
+    cpuScore.classList.add('cpuRounds');
+    scoreList.appendChild(playerScore);
+    scoreList.appendChild(cpuScore);
+}
+
 function getComputerSelection() {
     const rand = Math.floor(Math.random() * 3);
     const computerSelection = (rand === 0) ? 'rock' : 
         (rand === 1) ? 'paper' : 'scissors';   
     return computerSelection;
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function playRound(playerChoice) {
@@ -34,6 +76,7 @@ function calcRoundResult (playerSelection, computerSelection) {
 }
 
 function displayRoundResult (roundResult) {
+    const results = document.querySelector('.results');
     if (roundsPlayed++ === 0) {
         const rndResult = document.createElement('div');
         rndResult.classList.add('rndResult');
@@ -45,10 +88,18 @@ function displayRoundResult (roundResult) {
     rndResult.style.backgroundColor = 'purple';
 }
 
+function displayScore() {
+    const playerScore = document.querySelector('.plyrRounds');
+    const cpuScore = document.querySelector('.cpuRounds');
+    playerScore.textContent = `Player: ${playerRoundsWon}`;
+    cpuScore.textContent = `Opponent: ${cpuRoundsWon}`;
+}
+
 function gameOver() {
+    const results = document.querySelector('.results');
     const gameResult = (playerRoundsWon === WINCOND) ? "Congratulations, you won the game!" 
         : "You lost the game. Better luck next time!";
-    const displayWinner = document.createElement('div');  
+    const displayWinner = document.createElement('div');
     displayWinner.classList.add('winner');
     displayWinner.textContent = gameResult;
     results.appendChild(displayWinner);   
@@ -56,6 +107,7 @@ function gameOver() {
 }
 
 function playAgain() {
+    const results = document.querySelector('.results');
     const again = document.createElement('button');
     again.classList.add('again')
     again.textContent = "Play Again"
@@ -76,20 +128,10 @@ function resetGame() {
     displayScore();
 }
 
-function displayScore() {
-    const playerScore = document.querySelector('.plyrRounds');
-    const cpuScore = document.querySelector('.cpuRounds');
-    playerScore.textContent = `Player: ${playerRoundsWon}`;
-    cpuScore.textContent = `Opponent: ${cpuRoundsWon}`;
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const WINCOND = 5;
-let playerRoundsWon = 0;
-let cpuRoundsWon = 0;
-let roundsPlayed = 0;
-
-const results = document.querySelector('.results')
-const buttons = document.querySelectorAll('.btns');
-buttons.forEach(btn => btn.addEventListener('click', playRound))
-
-const container = document.querySelector('.container')
+function lowercaseFirstLetter(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}

@@ -12,49 +12,46 @@ function capitalizeFirstLetter(string) {
 function playRound(playerChoice) {
     computerSelection = getComputerSelection();
     playerSelection = playerChoice.target.id;
+    roundResult = calcRoundResult(playerSelection, computerSelection);
+    displayRoundResult(roundResult)
+    displayScore();
+    if(playerRoundsWon === WINCOND || cpuRoundsWon === WINCOND) {
+        gameOver();
+    } 
+}
 
-    
+function calcRoundResult (playerSelection, computerSelection) {
     const tieMessage = `It's a tie! We both chose ${playerSelection}.`;
     const winMessage = `You win! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}.`;
     const loseMessage =  `You lose! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`;
-
     const roundResult = (playerSelection === 'rock') ? ((computerSelection === 'scissors') ? winMessage : (computerSelection === 'paper') ? loseMessage : tieMessage) 
             : (playerSelection === 'paper') ? ((computerSelection === 'rock') ? winMessage : (computerSelection === 'scissors') ? loseMessage : tieMessage) 
             : ((computerSelection === 'paper') ? winMessage : (computerSelection === 'rock') ? loseMessage : tieMessage);
+    const subRes = roundResult.slice(4, 5);
+    if (subRes === 'w') playerRoundsWon++;
+    else if (subRes === 'l') cpuRoundsWon++;
+    return roundResult;
+}
 
-
+function displayRoundResult (roundResult) {
     if (roundsPlayed++ === 0) {
         const rndResult = document.createElement('div');
         rndResult.classList.add('rndResult');
         const score = document.querySelector('.score');
         results.insertBefore(rndResult, score);
     }
-
-    rndResult = document.querySelector('.rndResult');
+    const rndResult = document.querySelector('.rndResult');
     rndResult.textContent = roundResult;
     rndResult.style.backgroundColor = 'purple';
-
-    subRes = roundResult.slice(4,5);
-    if (subRes === 'w') playerRoundsWon++;
-    else if (subRes === 'l') cpuRoundsWon++;
-        
-    displayScore();
-    
-    if(playerRoundsWon === WINCOND || cpuRoundsWon === WINCOND) {
-        gameOver();
-    } 
-    
 }
 
 function gameOver() {
     const gameResult = (playerRoundsWon === WINCOND) ? "Congratulations, you won the game!" 
         : "You lost the game. Better luck next time!";
-
     const displayWinner = document.createElement('div');  
     displayWinner.classList.add('winner');
     displayWinner.textContent = gameResult;
-    results.appendChild(displayWinner);
-    
+    results.appendChild(displayWinner);   
     playAgain();
 }
 
@@ -82,10 +79,8 @@ function resetGame() {
 function displayScore() {
     const playerScore = document.querySelector('.plyrRounds');
     const cpuScore = document.querySelector('.cpuRounds');
-
     playerScore.textContent = `Player: ${playerRoundsWon}`;
     cpuScore.textContent = `Opponent: ${cpuRoundsWon}`;
-
 }
 
 const WINCOND = 5;

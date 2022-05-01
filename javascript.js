@@ -23,6 +23,7 @@ function createButtons() {
         let button = document.createElement('button');
         button.type = "button";
         button.id = lowercaseFirstLetter(CHOICE[i]);
+        button.classList.add('btn');
         button.textContent = CHOICE[i];
         buttons.appendChild(button);
         button.addEventListener('click', playRound);
@@ -102,7 +103,8 @@ function gameOver() {
     const displayWinner = document.createElement('div');
     displayWinner.classList.add('winner');
     displayWinner.textContent = gameResult;
-    results.appendChild(displayWinner);   
+    results.appendChild(displayWinner);  
+    rmEventListeners();
     playAgain();
 }
 
@@ -125,7 +127,22 @@ function resetGame() {
     rmButton.parentNode.removeChild(rmButton);
     const rmRndDisplay = document.querySelector('.rndResult');
     rmRndDisplay.parentNode.removeChild(rmRndDisplay)
+    addEventListeners();
     displayScore();
+}
+
+function rmEventListeners() {
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => {
+        btn.removeEventListener('click', playRound);
+    });
+}
+
+function addEventListeners() {
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', playRound);
+    });
 }
 
 function capitalizeFirstLetter(string) {

@@ -21,7 +21,8 @@ function createButtons() {
     container.appendChild(buttons);
     for (let i=0; i<3; i++) {
         let button = document.createElement('button');
-        button.type = "button";
+        button.type = "submit";
+        button.classList.add(lowercaseFirstLetter(CHOICE[i]));
         button.id = lowercaseFirstLetter(CHOICE[i]);
         button.classList.add('btn');
         button.textContent = CHOICE[i];
@@ -111,10 +112,11 @@ function gameOver() {
 function playAgain() {
     const results = document.querySelector('.results');
     const again = document.createElement('button');
-    again.classList.add('again')
-    again.textContent = "Play Again"
-    results.appendChild(again)
-    again.addEventListener('click', resetGame)
+    again.type = "reset";
+    again.classList.add('again');
+    again.textContent = "Play Again";
+    results.appendChild(again);
+    again.addEventListener('click', resetGame);
 }
 
 function resetGame() {

@@ -10,9 +10,27 @@ start.addEventListener('click', startGame);
 
 function startGame() {
     start.parentNode.removeChild(start);
+    showInstructions();
     createButtons();
     createScore();
     displayScore();
+}
+
+function showInstructions() {
+    const instructdiv = document.createElement('div');
+    instructdiv.classList.add('instructdiv');
+    
+    const instruct = document.createElement('p');
+    instruct.classList.add('instructions');
+    instruct.textContent = "Make your selection by clicking on one of the icons below!";
+
+    const toWin = document.createElement('p');
+    toWin.classList.add('toWin');
+    toWin.textContent = `The first one to score ${WINCOND} points wins`
+
+    instructdiv.appendChild(toWin);
+    instructdiv.appendChild(instruct);
+    container.appendChild(instructdiv);
 }
 
 function createButtons() {
@@ -98,7 +116,6 @@ function displayRoundResult (roundResult) {
     }
     const rndResult = document.querySelector('.rndResult');
     rndResult.textContent = roundResult;
-    rndResult.style.backgroundColor = 'purple';
 }
 
 function displayScore() {
@@ -118,6 +135,13 @@ function gameOver() {
     results.appendChild(displayWinner);  
     rmEventListeners();
     playAgain();
+}
+
+function rmEventListeners() {
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => {
+        btn.removeEventListener('click', playRound);
+    });
 }
 
 function playAgain() {
@@ -144,12 +168,7 @@ function resetGame() {
     displayScore();
 }
 
-function rmEventListeners() {
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(btn => {
-        btn.removeEventListener('click', playRound);
-    });
-}
+
 
 function addEventListeners() {
     const buttons = document.querySelectorAll('.btn');

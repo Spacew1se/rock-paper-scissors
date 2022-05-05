@@ -77,18 +77,18 @@ ul {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #C0FDFB;
+  background-color: #676966;
 }
 
 h1 {
-  color: #30362F;
+  color: #121619;
   text-align: center;
   user-select: none;
 }
 
 .start {
-  background-color: #DCCCBB;
-  border: .2em solid #873D48;
+  background-color: #A8A8A8;
+  border: .2em solid #0C0D0A;
   border-radius: 20% 15% / 20% 20%;
   padding: 1.5em;
 }
@@ -109,6 +109,16 @@ h1 {
   
 .scissors {
   background: url("./images/scissors.svg");
+}
+
+.btndiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.btntxt {
+  align-self: center;
 }
 
 .btn {

@@ -19,14 +19,25 @@ function createButtons() {
     const buttons = document.createElement('div');
     buttons.classList.add('btns');
     container.appendChild(buttons);
+    
+    let btndiv, button, btntxt;
     for (let i=0; i<3; i++) {
-        let button = document.createElement('button');
+
+        btndiv = document.createElement('div');
+        btndiv.classList.add('btndiv');
+        buttons.appendChild(btndiv);
+
+        button = document.createElement('button');
         button.type = "submit";
-        button.classList.add(lowercaseFirstLetter(CHOICE[i]));
+        button.classList.add(lowercaseFirstLetter(CHOICE[i]), 'btn');
         button.id = lowercaseFirstLetter(CHOICE[i]);
-        button.classList.add('btn');
-        button.textContent = CHOICE[i];
-        buttons.appendChild(button);
+        btndiv.appendChild(button);
+        
+        btntxt = document.createElement('p');
+        btntxt.textContent = CHOICE[i];
+        btntxt.classList.add('btntxt');   
+        btndiv.appendChild(btntxt);
+        
         button.addEventListener('click', playRound);
     }
 }

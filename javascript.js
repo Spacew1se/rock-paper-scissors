@@ -17,6 +17,8 @@ function startGame() {
 }
 
 function showInstructions() {
+    const instructCont = document.createElement('div');
+    instructCont.classList.add('instructCont');
     const instructdiv = document.createElement('div');
     instructdiv.classList.add('instructdiv');
     
@@ -26,11 +28,12 @@ function showInstructions() {
 
     const toWin = document.createElement('p');
     toWin.classList.add('toWin');
-    toWin.textContent = `The first one to score ${WINCOND} points wins`
+    toWin.textContent = `The first one to score ${WINCOND} points wins`;
 
+    instructCont.appendChild(instructdiv);
     instructdiv.appendChild(toWin);
     instructdiv.appendChild(instruct);
-    container.appendChild(instructdiv);
+    container.appendChild(instructCont);
 }
 
 function createButtons() {
@@ -64,15 +67,15 @@ function createScore() {
     const results = document.createElement('div');
     results.classList.add('results');
     container.appendChild(results);
-    const scoreList = document.createElement('ul');
-    scoreList.classList.add('score');
-    results.appendChild(scoreList);
-    const playerScore = document.createElement('li');
+    const scoreDiv = document.createElement('div');
+    scoreDiv.classList.add('score');
+    results.appendChild(scoreDiv);
+    const playerScore = document.createElement('p');
     playerScore.classList.add('plyrRounds');
-    const cpuScore = document.createElement('li');
+    const cpuScore = document.createElement('p');
     cpuScore.classList.add('cpuRounds');
-    scoreList.appendChild(playerScore);
-    scoreList.appendChild(cpuScore);
+    scoreDiv.appendChild(playerScore);
+    scoreDiv.appendChild(cpuScore);
 }
 
 function getComputerSelection() {

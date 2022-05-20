@@ -2,7 +2,7 @@ const WINCOND = 5;
 const CHOICE = ["Rock", "Paper", "Scissors"]
 let playerRoundsWon = 0;
 let cpuRoundsWon = 0;
-let roundsPlayed = 0;
+let roundsPlayed = 1;
 
 const container = document.querySelector('.container');
 const start = document.querySelector('.start');
@@ -10,30 +10,17 @@ start.addEventListener('click', startGame);
 
 function startGame() {
     start.parentNode.removeChild(start);
-    showInstructions();
+    createInfoCont();
     createButtons();
     createScore();
-    displayScore();
+    showInstructions();
+    displayScore();  
 }
 
-function showInstructions() {
-    const instructCont = document.createElement('div');
-    instructCont.classList.add('instructCont');
-    const instructdiv = document.createElement('div');
-    instructdiv.classList.add('instructdiv');
-    
-    const instruct = document.createElement('p');
-    instruct.classList.add('instructions');
-    instruct.textContent = "Make your selection by clicking on one of the icons below!";
-
-    const toWin = document.createElement('p');
-    toWin.classList.add('toWin');
-    toWin.textContent = `The first one to score ${WINCOND} points wins`;
-
-    instructCont.appendChild(instructdiv);
-    instructdiv.appendChild(toWin);
-    instructdiv.appendChild(instruct);
-    container.appendChild(instructCont);
+function createInfoCont() {
+    const infoCont = document.createElement('div');
+    infoCont.classList.add('infoCont');
+    container.appendChild(infoCont);
 }
 
 function createButtons() {
@@ -58,7 +45,6 @@ function createButtons() {
         btntxt.textContent = CHOICE[i];
         btntxt.classList.add('btntxt');   
         btndiv.appendChild(btntxt);
-        
         button.addEventListener('click', playRound);
     }
 }
@@ -67,6 +53,10 @@ function createScore() {
     const results = document.createElement('div');
     results.classList.add('results');
     container.appendChild(results);
+    const round = document.createElement('div');
+    round.classList.add('round');
+    round.textContent = `Round ${roundsPlayed}`;
+    results.appendChild(round);
     const scoreDiv = document.createElement('div');
     scoreDiv.classList.add('score');
     results.appendChild(scoreDiv);
@@ -76,6 +66,24 @@ function createScore() {
     cpuScore.classList.add('cpuRounds');
     scoreDiv.appendChild(playerScore);
     scoreDiv.appendChild(cpuScore);
+}
+
+function showInstructions() {
+    const infoCont = document.querySelector('.infoCont');
+    const instructdiv = document.createElement('div');
+    instructdiv.classList.add('instructdiv');
+    
+    const instruct = document.createElement('p');
+    instruct.classList.add('instructions');
+    instruct.textContent = "Make your selection by clicking on one of the icons below!";
+
+    const toWin = document.createElement('p');
+    toWin.classList.add('instructions');
+    toWin.textContent = `The first one to score ${WINCOND} points wins`;
+
+    infoCont.replaceChildren(instructdiv);
+    instructdiv.appendChild(toWin);
+    instructdiv.appendChild(instruct);
 }
 
 function getComputerSelection() {
@@ -97,9 +105,9 @@ function playRound(playerChoice) {
 }
 
 function calcRoundResult (playerSelection, computerSelection) {
-    const tieMessage = `It's a tie! We both chose ${playerSelection}.`;
-    const winMessage = `You win! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}.`;
-    const loseMessage =  `You lose! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`;
+    const tieMessage = `Round ${roundsPlayed} was a tie! We both chose ${playerSelection}.`;
+    const winMessage = `You won round ${roundsPlayed}! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}.`;
+    const loseMessage =  `You lost round ${roundsPlayed}! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`;
     const roundResult = (playerSelection === 'rock') ? ((computerSelection === 'scissors') ? winMessage : (computerSelection === 'paper') ? loseMessage : tieMessage) 
             : (playerSelection === 'paper') ? ((computerSelection === 'rock') ? winMessage : (computerSelection === 'scissors') ? loseMessage : tieMessage) 
             : ((computerSelection === 'paper') ? winMessage : (computerSelection === 'rock') ? loseMessage : tieMessage);
@@ -111,7 +119,8 @@ function calcRoundResult (playerSelection, computerSelection) {
 
 function displayRoundResult (roundResult) {
     const results = document.querySelector('.results');
-    if (roundsPlayed++ === 0) {
+    
+    if (roundsPlayed++ === 1) {
         const rndResult = document.createElement('div');
         rndResult.classList.add('rndResult');
         const score = document.querySelector('.score');
@@ -122,20 +131,22 @@ function displayRoundResult (roundResult) {
 }
 
 function displayScore() {
+    const round = document.querySelector('.round');
     const playerScore = document.querySelector('.plyrRounds');
     const cpuScore = document.querySelector('.cpuRounds');
+    round.textContent = `Round ${roundsPlayed}`;
     playerScore.textContent = `Player: ${playerRoundsWon}`;
     cpuScore.textContent = `Opponent: ${cpuRoundsWon}`;
 }
 
 function gameOver() {
-    const results = document.querySelector('.results');
+    const infoCont = document.querySelector('.infoCont');
     const gameResult = (playerRoundsWon === WINCOND) ? "Congratulations, you won the game!" 
         : "You lost the game. Better luck next time!";
     const displayWinner = document.createElement('div');
     displayWinner.classList.add('winner');
     displayWinner.textContent = gameResult;
-    results.appendChild(displayWinner);  
+    infoCont.replaceChildren(displayWinner) 
     rmEventListeners();
     playAgain();
 }
@@ -160,7 +171,7 @@ function playAgain() {
 function resetGame() {
     playerRoundsWon = 0;
     cpuRoundsWon = 0;
-    roundsPlayed = 0;
+    roundsPlayed = 1;
     const rmWinDisplay = document.querySelector('.winner');
     rmWinDisplay.parentNode.removeChild(rmWinDisplay);
     const rmButton = document.querySelector('.again');
@@ -168,10 +179,9 @@ function resetGame() {
     const rmRndDisplay = document.querySelector('.rndResult');
     rmRndDisplay.parentNode.removeChild(rmRndDisplay)
     addEventListeners();
+    showInstructions();
     displayScore();
 }
-
-
 
 function addEventListeners() {
     const buttons = document.querySelectorAll('.btn');

@@ -2,7 +2,7 @@ const WINCOND = 5;
 const CHOICE = ["Rock", "Paper", "Scissors"]
 let playerRoundsWon = 0;
 let cpuRoundsWon = 0;
-let roundsPlayed = 1;
+let roundsPlayed = 0;
 
 const container = document.querySelector('.container');
 const start = document.querySelector('.start');
@@ -30,93 +30,94 @@ function createButtons() {
     
     let btndiv, button, btntxt;
     for (let i=0; i<3; i++) {
-
         btndiv = document.createElement('div');
-        btndiv.classList.add('btndiv');
-        buttons.appendChild(btndiv);
-
         button = document.createElement('button');
-        button.type = "submit";
-        button.classList.add(lowercaseFirstLetter(CHOICE[i]), 'btn');
-        button.id = lowercaseFirstLetter(CHOICE[i]);
-        btndiv.appendChild(button);
-        
         btntxt = document.createElement('p');
+
+        btndiv.classList.add('btndiv');
+        button.classList.add(lowercaseFirstLetter(CHOICE[i]), 'btn');
+        button.type = "submit";
+        button.id = lowercaseFirstLetter(CHOICE[i]);
+        btntxt.classList.add('btntxt');
         btntxt.textContent = CHOICE[i];
-        btntxt.classList.add('btntxt');   
-        btndiv.appendChild(btntxt);
-        button.addEventListener('click', playRound);
+        
+        buttons.appendChild(btndiv);
+        btndiv.append(button, btntxt);
     }
+    addEventListeners();
 }
 
 function createScore() {
     const results = document.createElement('div');
-    results.classList.add('results');
-    container.appendChild(results);
     const round = document.createElement('div');
-    round.classList.add('round');
-    round.textContent = `Round ${roundsPlayed}`;
-    results.appendChild(round);
     const scoreDiv = document.createElement('div');
-    scoreDiv.classList.add('score');
-    results.appendChild(scoreDiv);
+    const playerInfo = document.createElement('div');
+    const cpuInfo = document.createElement('div');
     const playerScore = document.createElement('p');
-    playerScore.classList.add('plyrRounds');
     const cpuScore = document.createElement('p');
+    
+    results.classList.add('results');
+    round.classList.add('round'); 
+    scoreDiv.classList.add('score');
+    cpuInfo.classList.add('cpuInfo')
+    playerInfo.classList.add('playerInfo');
+    playerScore.classList.add('playerRounds');
     cpuScore.classList.add('cpuRounds');
-    scoreDiv.appendChild(playerScore);
-    scoreDiv.appendChild(cpuScore);
+    round.textContent = `Round ${roundsPlayed}`;
+
+    container.appendChild(results);
+    results.append(round, scoreDiv);
+    playerInfo.appendChild(playerScore);
+    cpuInfo.appendChild(cpuScore);
+    scoreDiv.append(playerInfo, cpuInfo);
 }
 
 function showInstructions() {
     const infoCont = document.querySelector('.infoCont');
     const instructdiv = document.createElement('div');
-    instructdiv.classList.add('instructdiv');
-    
     const instruct = document.createElement('p');
-    instruct.classList.add('instructions');
-    instruct.textContent = "Make your selection by clicking on one of the icons below!";
-
     const toWin = document.createElement('p');
+
+    instructdiv.classList.add('instructdiv');
+    instruct.classList.add('instructions');
     toWin.classList.add('instructions');
     toWin.textContent = `The first one to score ${WINCOND} points wins`;
+    instruct.textContent = "Make your selection by clicking on one of the icons below!";
 
     infoCont.replaceChildren(instructdiv);
-    instructdiv.appendChild(toWin);
-    instructdiv.appendChild(instruct);
+    instructdiv.append(toWin, instruct);
 }
 
 function getComputerSelection() {
     const rand = Math.floor(Math.random() * 3);
-    const computerSelection = (rand === 0) ? 'rock' : 
-        (rand === 1) ? 'paper' : 'scissors';   
-    return computerSelection;
+    return lowercaseFirstLetter(CHOICE[rand]);
 }
 
 function playRound(playerChoice) {
     computerSelection = getComputerSelection();
     playerSelection = playerChoice.target.id;
-    if (roundsPlayed++ === 1) createRoundResult();
+    if (roundsPlayed === 1) createRoundResult();
     displayRoundResult(calcRoundResult(playerSelection, computerSelection));
     displayScore();
     if(playerRoundsWon === WINCOND || cpuRoundsWon === WINCOND) {
         gameOver();
-    } 
+    }
 }
 
 function createRoundResult () {
     const results = document.querySelector('.results');
     const score = document.querySelector('.score');
-    const choiceDisplay = document.createElement('div');
-    choiceDisplay.classList.add('choiceDisplay');
-    results.insertBefore(choiceDisplay, score);
-    const playerDisplay = document.createElement('span');
-    playerDisplay.classList.add('playerDisplay');
-    const cpuDisplay = document.createElement('span');
-    cpuDisplay.classList.add('cpuDisplay');
-    choiceDisplay.append(playerDisplay, cpuDisplay);
+    const playerInfo = document.querySelector('.playerInfo');
+    const cpuInfo = document.querySelector('.cpuInfo');
     const rndResult = document.createElement('div');
-    rndResult.classList.add('rndResult');
+    const playerDisplay = document.createElement('p');
+    const cpuDisplay = document.createElement('p');
+
+    rndResult.classList.add('rndResult');   
+    playerDisplay.classList.add('playerDisplay');
+    cpuDisplay.classList.add('cpuDisplay');
+    playerInfo.appendChild(playerDisplay);
+    cpuInfo.appendChild(cpuDisplay);
     results.insertBefore(rndResult, score);
 }
 
@@ -138,18 +139,19 @@ function calcRoundResult (playerSelection, computerSelection) {
 
 function displayRoundResult (resultArr) {
     const playerDisplay = document.querySelector('.playerDisplay');
-    playerDisplay.textContent = resultArr[0];
     const cpuDisplay = document.querySelector('.cpuDisplay');
-    cpuDisplay.textContent = resultArr[1];
     const rndResult = document.querySelector('.rndResult');
+    playerDisplay.textContent = resultArr[0];
+    cpuDisplay.textContent = resultArr[1];   
     rndResult.textContent = resultArr[2];
 }
 
 function displayScore() {
+    if (playerRoundsWon === WINCOND || cpuRoundsWon === WINCOND) --roundsPlayed;
     const round = document.querySelector('.round');
-    const playerScore = document.querySelector('.plyrRounds');
+    const playerScore = document.querySelector('.playerRounds');
     const cpuScore = document.querySelector('.cpuRounds');
-    round.textContent = `Round ${roundsPlayed}`;
+    round.textContent = `Round ${++roundsPlayed}`;
     playerScore.textContent = `Player: ${playerRoundsWon}`;
     cpuScore.textContent = `Opponent: ${cpuRoundsWon}`;
 }
@@ -186,15 +188,17 @@ function playAgain() {
 function resetGame() {
     playerRoundsWon = 0;
     cpuRoundsWon = 0;
-    roundsPlayed = 1;
+    roundsPlayed = 0;
     const rmWinDisplay = document.querySelector('.winner');
     rmWinDisplay.parentNode.removeChild(rmWinDisplay);
     const rmButton = document.querySelector('.again');
     rmButton.parentNode.removeChild(rmButton);
     const rmRndDisplay = document.querySelector('.rndResult');
     rmRndDisplay.parentNode.removeChild(rmRndDisplay);
-    const rmChoiceDisplay = document.querySelector('.choiceDisplay');
-    rmChoiceDisplay.parentNode.removeChild(rmChoiceDisplay);
+    const rmPlayerDisplay = document.querySelector('.playerDisplay');
+    rmPlayerDisplay.parentNode.removeChild(rmPlayerDisplay);
+    const rmCpuDisplay = document.querySelector('.cpuDisplay');
+    rmCpuDisplay.parentNode.removeChild(rmCpuDisplay);
     addEventListeners();
     showInstructions();
     displayScore();

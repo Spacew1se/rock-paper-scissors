@@ -136,10 +136,7 @@ h1 {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  
 }
-
-
 
 .score {
   display: flex;
@@ -147,13 +144,19 @@ h1 {
   align-items: center;
   min-width: 60vw;
   gap: 1em;
-  
 }
 
-.score p {
+.playerInfo, .cpuInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cpuRounds, .playerRounds{
   border: .2em solid #0C0D0A;
   min-width: fit-content;
-  width: 20vw;
+  width: 16vw;
   padding: 1.5em 1em;
   text-align: center;
   background-color: #A8A8A8;

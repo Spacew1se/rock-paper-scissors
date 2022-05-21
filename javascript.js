@@ -96,15 +96,33 @@ function getComputerSelection() {
 function playRound(playerChoice) {
     computerSelection = getComputerSelection();
     playerSelection = playerChoice.target.id;
-    roundResult = calcRoundResult(playerSelection, computerSelection);
-    displayRoundResult(roundResult)
+    if (roundsPlayed++ === 1) createRoundResult();
+    displayRoundResult(calcRoundResult(playerSelection, computerSelection));
     displayScore();
     if(playerRoundsWon === WINCOND || cpuRoundsWon === WINCOND) {
         gameOver();
     } 
 }
 
+function createRoundResult () {
+    const results = document.querySelector('.results');
+    const score = document.querySelector('.score');
+    const choiceDisplay = document.createElement('div');
+    choiceDisplay.classList.add('choiceDisplay');
+    results.insertBefore(choiceDisplay, score);
+    const playerDisplay = document.createElement('span');
+    playerDisplay.classList.add('playerDisplay');
+    const cpuDisplay = document.createElement('span');
+    cpuDisplay.classList.add('cpuDisplay');
+    choiceDisplay.append(playerDisplay, cpuDisplay);
+    const rndResult = document.createElement('div');
+    rndResult.classList.add('rndResult');
+    results.insertBefore(rndResult, score);
+}
+
 function calcRoundResult (playerSelection, computerSelection) {
+    const rpsPlayer = `You chose ${playerSelection}`;
+    const rpsCpu = `Computer chose ${computerSelection}`;
     const tieMessage = `Round ${roundsPlayed} was a tie! We both chose ${playerSelection}.`;
     const winMessage = `You won round ${roundsPlayed}! ${capitalizeFirstLetter(playerSelection)} beats ${computerSelection}.`;
     const loseMessage =  `You lost round ${roundsPlayed}! ${capitalizeFirstLetter(computerSelection)} beats ${playerSelection}.`;
@@ -114,20 +132,17 @@ function calcRoundResult (playerSelection, computerSelection) {
     const subRes = roundResult.slice(4, 5);
     if (subRes === 'w') playerRoundsWon++;
     else if (subRes === 'l') cpuRoundsWon++;
-    return roundResult;
+    const resultArr = [rpsPlayer, rpsCpu, roundResult];
+    return resultArr;
 }
 
-function displayRoundResult (roundResult) {
-    const results = document.querySelector('.results');
-    
-    if (roundsPlayed++ === 1) {
-        const rndResult = document.createElement('div');
-        rndResult.classList.add('rndResult');
-        const score = document.querySelector('.score');
-        results.insertBefore(rndResult, score);
-    }
+function displayRoundResult (resultArr) {
+    const playerDisplay = document.querySelector('.playerDisplay');
+    playerDisplay.textContent = resultArr[0];
+    const cpuDisplay = document.querySelector('.cpuDisplay');
+    cpuDisplay.textContent = resultArr[1];
     const rndResult = document.querySelector('.rndResult');
-    rndResult.textContent = roundResult;
+    rndResult.textContent = resultArr[2];
 }
 
 function displayScore() {
@@ -177,7 +192,9 @@ function resetGame() {
     const rmButton = document.querySelector('.again');
     rmButton.parentNode.removeChild(rmButton);
     const rmRndDisplay = document.querySelector('.rndResult');
-    rmRndDisplay.parentNode.removeChild(rmRndDisplay)
+    rmRndDisplay.parentNode.removeChild(rmRndDisplay);
+    const rmChoiceDisplay = document.querySelector('.choiceDisplay');
+    rmChoiceDisplay.parentNode.removeChild(rmChoiceDisplay);
     addEventListeners();
     showInstructions();
     displayScore();
